@@ -22,16 +22,26 @@ public class OrderBook {
 
     public void handleQuery(QueryRequest queryRequest) {
         if(queryRequest.isBID()) {
-            queryList.add(String.format(FORMAT_STRING, bids.lastKey(), bids.get(bids.lastKey())));
+            if(bids.isEmpty()) {
+                queryList.add(String.format(FORMAT_STRING, 0, 0));
+            } else {
+                Integer bestBid = bids.lastKey();
+                queryList.add(String.format(FORMAT_STRING, bestBid, bids.get(bestBid)));
+            }
         } else if(queryRequest.isASK()) {
-            queryList.add(String.format(FORMAT_STRING, bids.lastKey(), bids.get(bids.lastKey())));
+            if(asks.isEmpty()) {
+                queryList.add(String.format(FORMAT_STRING, 0, 0));
+            } else {
+                Integer bestAsk = asks.lastKey();
+                queryList.add(String.format(FORMAT_STRING, bestAsk, asks.get(bestAsk)));
+            }
         } else if(queryRequest.isSIZE()) {
             if (asks.containsKey(queryRequest.getPrice())) {
-                queryList.add(asks.get(queryRequest.getPrice()).toString());
+                queryList.add(asks.get(queryRequest.getPrice()).toString() + "\n");
             } else if (bids.containsKey(queryRequest.getPrice())) {
-                queryList.add(bids.get(queryRequest.getPrice()).toString());
+                queryList.add(bids.get(queryRequest.getPrice()).toString() + "\n");
             } else {
-                queryList.add("0");
+                queryList.add("0\n");
             }
         }
     }
@@ -50,6 +60,12 @@ public class OrderBook {
                 addUpdate(bids, asks, request.getPrice(), request.getSize());
             } else {
                 addUpdate(asks, bids, request.getPrice(), request.getSize());
+            }
+        } else {
+            if (request.isBidOrientedRequest()) {
+                bids.remove(request.getPrice());
+            } else {
+                asks.remove(request.getPrice());
             }
         }
     }
