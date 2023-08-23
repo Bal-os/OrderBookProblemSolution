@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="BasicOrderBookManagement:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BasicOrderBookManagement_jar</output-path>
+    <root id="archive" name="BasicOrderBookManagement.jar">
+      <element id="module-output" name="BasicOrderBookManagement" />
+      <element id="module-source" name="BasicOrderBookManagement" />
+    </root>
+  </artifact>
+</component>
